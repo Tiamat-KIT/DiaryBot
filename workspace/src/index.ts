@@ -1,5 +1,6 @@
 import {Hono} from 'hono'
 import { type ExportedHandlerScheduledHandler } from "@cloudflare/workers-types"
+import { StatusCode } from 'hono/utils/http-status'
 
 const app = new Hono<{
   Bindings: {
@@ -28,13 +29,15 @@ app.post("/",async (c) => {
   })
   if(response.ok){
     const result = await response.json()
-    const status = response.status
+    c.json({result},200)
+  }else {
+    const result = await response.json()
+    const status:number  = response.status 
     const text = response.statusText
     c.json({
-      code: status,
       message: text,
       json: result
-    },200)
+    },status as StatusCode)
   }
 })
 
