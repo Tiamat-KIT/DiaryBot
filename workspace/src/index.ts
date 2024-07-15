@@ -9,6 +9,29 @@ const app = new Hono<{
   }
 }>()
 
+app.post("/",async (c) => {
+  const response = await fetch("https://api.line.me/v2/bot/message/push",{
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
+    },
+    body: JSON.stringify({
+      "to": `${env.MY_USER_ID}`,
+      "messages": [
+        {
+          "type": "text",
+          "text": "日記書けよ"
+        }
+      ],
+      "notificationDisabled": false
+    })
+  })
+  if(response.ok){
+    const result = await response.json()
+    c.json({result},200)
+  }
+})
+
 
 const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) => {
   if(event.cron === "* 12 * * *") {
