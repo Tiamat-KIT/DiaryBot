@@ -21,7 +21,7 @@ app.post("/",async (c) => {
       "messages": [
         {
           "type": "text",
-          "text": "日記書けよ"
+          "text": "テスト！"
         }
       ],
       "notificationDisabled": false
