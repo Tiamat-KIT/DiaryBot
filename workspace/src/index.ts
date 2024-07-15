@@ -13,10 +13,10 @@ app.post("/",async (c) => {
   const response = await fetch("https://api.line.me/v2/bot/message/push",{
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
+      "Authorization": `Bearer ${c.env.LINE_CHANNEL_ACCESS_TOKEN}`
     },
     body: JSON.stringify({
-      "to": `${env.MY_USER_ID}`,
+      "to": `${c.env.MY_USER_ID}`,
       "messages": [
         {
           "type": "text",
