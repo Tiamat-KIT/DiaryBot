@@ -11,6 +11,7 @@ const app = new Hono<{
 
 app.post("/",async (c) => {
   const response = await fetch("https://api.line.me/v2/bot/message/push",{
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${c.env.LINE_CHANNEL_ACCESS_TOKEN}`
@@ -40,6 +41,7 @@ app.post("/",async (c) => {
 const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) => {
   if(event.cron === "* 12 * * *") {
     await fetch("https://api.line.me/v2/bot/message/push",{
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
@@ -59,6 +61,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
     console.log("Worker Works!")
   }else if(event.cron === "* 21 * * * *") {
     await fetch("https://api.line.me/v2/bot/message/push",{
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
@@ -76,6 +79,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
     })
   }else if(event.cron === "* 19 * * *"){
     await fetch("https://api.line.me/v2/bot/message/push",{
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
@@ -93,6 +97,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
     })
   }else if(event.cron === "* */4 * * *"){
     await fetch("https://api.line.me/v2/bot/message/push",{
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
