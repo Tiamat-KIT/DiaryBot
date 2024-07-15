@@ -30,6 +30,40 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
     })
   }else if(event.cron === "*/30 * * * *"){
     console.log("Worker Works!")
+  }else if(event.cron === "* 21 * * * *") {
+    await fetch("https://api.line.me/v2/bot/message/push",{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
+      },
+      body: JSON.stringify({
+        "to": `${env.MY_USER_ID}`,
+        "message": [
+          {
+            "type": "text",
+            "text": "おはよう。朝だな！"
+          }
+        ],
+        "notificationDisabled": false
+      })
+    })
+  }else if(event.cron === "* 19 * * * *"){
+    await fetch("https://api.line.me/v2/bot/message/push",{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
+      },
+      body: JSON.stringify({
+        "to": `${env.MY_USER_ID}`,
+        "message": [
+          {
+            "type": "text",
+            "text": "寝ないとヤバくないか？"
+          }
+        ],
+        "notificationDisabled": false
+      })
+    })
   }
 }
 
