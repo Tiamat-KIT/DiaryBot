@@ -19,7 +19,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
       },
       body: JSON.stringify({
         "to": `${env.MY_USER_ID}`,
-        "message": [
+        "messages": [
           {
             "type": "text",
             "text": "日記書けよ"
@@ -38,7 +38,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
       },
       body: JSON.stringify({
         "to": `${env.MY_USER_ID}`,
-        "message": [
+        "messages": [
           {
             "type": "text",
             "text": "おはよう。朝だな！"
@@ -55,7 +55,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
       },
       body: JSON.stringify({
         "to": `${env.MY_USER_ID}`,
-        "message": [
+        "messages": [
           {
             "type": "text",
             "text": "寝ないとヤバくないか？"
