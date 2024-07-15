@@ -1,0 +1,17 @@
+{
+  "name": "workspace",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts"
+  },
+  "dependencies": {
+    "@types/node": "^20.14.10",
+    "hono": "^4.4.13",
+    "linebot": "^1.6.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240529.0",
+    "wrangler": "^3.57.2"
+  }
+}

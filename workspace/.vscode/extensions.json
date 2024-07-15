@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "codiium.wrangler",
+        "alessandrobenassi.cloudflare-devtools",
+        "tamasfe.even-better-toml"
+    ]
+}
