@@ -47,7 +47,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
         "notificationDisabled": false
       })
     })
-  }else if(event.cron === "* 19 * * * *"){
+  }else if(event.cron === "* 19 * * *"){
     await fetch("https://api.line.me/v2/bot/message/push",{
       headers: {
         "Content-Type": "application/json",
@@ -59,6 +59,23 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
           {
             "type": "text",
             "text": "寝ないとヤバくないか？"
+          }
+        ],
+        "notificationDisabled": false
+      })
+    })
+  }else if(event.cron === "* */4 * * *"){
+    await fetch("https://api.line.me/v2/bot/message/push",{
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
+      },
+      body: JSON.stringify({
+        "to": `${env.MY_USER_ID}`,
+        "messages": [
+          {
+            "type": "text",
+            "text": `現在、${new Date().getHours().toLocaleString("ja-JP")}時です`
           }
         ],
         "notificationDisabled": false
