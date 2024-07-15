@@ -28,7 +28,13 @@ app.post("/",async (c) => {
   })
   if(response.ok){
     const result = await response.json()
-    c.json({result},200)
+    const status = response.status
+    const text = response.statusText
+    c.json({
+      code: status,
+      message: text,
+      json: result
+    },200)
   }
 })
 
