@@ -112,7 +112,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
         "notificationDisabled": false
       })
     })
-  }else if(event.cron === "0 19 * * *"){
+  }/* else if(event.cron === "0 19 * * *"){
     await fetch("https://api.line.me/v2/bot/message/push",{
       method: "POST",
       headers: {
@@ -130,7 +130,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
         "notificationDisabled": false
       })
     })
-  }else if(event.cron === "0 */4 * * *"){
+  } */else if(event.cron === "0 */4 * * *"){
     await fetch("https://api.line.me/v2/bot/message/push",{
       method: "POST",
       headers: {
