@@ -39,7 +39,7 @@ app.post("/",async (c) => {
 
 
 const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) => {
-  if(event.cron === "* 12 * * *") {
+  if(event.cron === "0 12 * * *") {
     await fetch("https://api.line.me/v2/bot/message/push",{
       method: "POST",
       headers: {
@@ -59,7 +59,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
     })
   }else if(event.cron === "*/30 * * * *"){
     console.log("Worker Works!")
-  }else if(event.cron === "* 21 * * * *") {
+  }else if(event.cron === "0 21 * * * *") {
     await fetch("https://api.line.me/v2/bot/message/push",{
       method: "POST",
       headers: {
@@ -77,7 +77,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
         "notificationDisabled": false
       })
     })
-  }else if(event.cron === "* 19 * * *"){
+  }else if(event.cron === "0 19 * * *"){
     await fetch("https://api.line.me/v2/bot/message/push",{
       method: "POST",
       headers: {
@@ -95,7 +95,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
         "notificationDisabled": false
       })
     })
-  }else if(event.cron === "* */4 * * *"){
+  }else if(event.cron === "0 */4 * * *"){
     await fetch("https://api.line.me/v2/bot/message/push",{
       method: "POST",
       headers: {

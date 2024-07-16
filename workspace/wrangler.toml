@@ -7,7 +7,7 @@ compatibility_flags = [ "nodejs_compat" ]
 # MY_VAR = "my-variable"
 
 [triggers]
-crons = ["* 12 * * *","*/30 * * * *","* 21 * * *","* 19 * * *","* */4 * * *"]
+crons = ["0 12 * * *","*/30 * * * *","0 21 * * *","0 19 * * *","0 */4 * * *"]
 
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"
