@@ -4,5 +4,7 @@
 interface Env {
     LINE_CHANNEL_ACCESS_TOKEN: string,
     LINE_CHANNEL_SECRET: string,
-    MY_USER_ID: string
+    MY_USER_ID: string,
+    NOTION_TOKEN: string,
+    DATABASE_ID: string
 }

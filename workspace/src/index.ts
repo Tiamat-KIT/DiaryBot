@@ -1,11 +1,16 @@
 import {Hono} from 'hono'
 import { type ExportedHandlerScheduledHandler } from "@cloudflare/workers-types"
+import {Client,LogLevel} from "@notionhq/client"
+import {formatToTimeZone} from "date-fns-timezone"
+  
 
 const app = new Hono<{
   Bindings: {
     LINE_CHANNEL_ACCESS_TOKEN: string,
     LINE_CHANNEL_SECRET: string,
-    MY_USER_ID: string
+    MY_USER_ID: string,
+    NOTION_TOKEN: string,
+    DATABASE_ID:string
   }
 }>()
 
@@ -34,6 +39,36 @@ app.post("/",async (c) => {
     const status:number  = response.status 
     const text = response.statusText
     console.log(`Code: ${status}: ${text}`)
+  }
+})
+
+app.post("/new",async (c) => {
+  try {
+    const notion = new Client({
+      auth: c.env.NOTION_TOKEN,
+      logLevel: LogLevel.INFO
+    })
+    const NewDiary = await notion.pages.create({
+      parent: {
+        database_id: c.env.DATABASE_ID
+      },
+      icon: {
+        emoji: "📘"
+      },
+      properties: {
+        "名前": {
+          title: [
+            {
+              text: {
+                content: `${formatToTimeZone(new Date(),"YYYY/MM/DD",{timeZone: "Asia/Tokyo"})}`
+              }
+            }
+          ]
+        }
+      }
+    })
+  } catch(err: unknown){
+    console.error(err)
   }
 })
 
@@ -113,6 +148,34 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
         "notificationDisabled": false
       })
     })
+  }else if(event.cron === "0 15 * * *"){
+    try {
+      const notion = new Client({
+        auth: env.NOTION_TOKEN,
+        logLevel: LogLevel.INFO
+      })
+      const NewDiary = await notion.pages.create({
+        parent: {
+          database_id: env.DATABASE_ID
+        },
+        icon: {
+          emoji: "📘"
+        },
+        properties: {
+          "名前": {
+            title: [
+              {
+                text: {
+                  content: `${formatToTimeZone(new Date(),"YYYY/MM/DD",{timeZone: "Asia/Tokyo"})}`
+                }
+              }
+            ]
+          }
+        }
+      })
+    } catch(err: unknown){
+      console.error(err)
+    }
   }
 }
 
