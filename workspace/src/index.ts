@@ -2,7 +2,8 @@ import {Hono} from 'hono'
 import { type ExportedHandlerScheduledHandler } from "@cloudflare/workers-types"
 import {Client,LogLevel} from "@notionhq/client"
 import {formatToTimeZone} from "date-fns-timezone"
-  
+import { CreateDiaryPage } from './utils'
+
 
 const app = new Hono<{
   Bindings: {
@@ -41,37 +42,6 @@ app.post("/",async (c) => {
     console.log(`Code: ${status}: ${text}`)
   }
 })
-
-app.post("/new",async (c) => {
-  try {
-    const notion = new Client({
-      auth: c.env.NOTION_TOKEN,
-      logLevel: LogLevel.INFO
-    })
-    const NewDiary = await notion.pages.create({
-      parent: {
-        database_id: c.env.DATABASE_ID
-      },
-      icon: {
-        emoji: "📘"
-      },
-      properties: {
-        "名前": {
-          title: [
-            {
-              text: {
-                content: `${formatToTimeZone(new Date(),"YYYY/MM/DD",{timeZone: "Asia/Tokyo"})}`
-              }
-            }
-          ]
-        }
-      }
-    })
-  } catch(err: unknown){
-    console.error(err)
-  }
-})
-
 
 const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) => {
   if(event.cron === "0 12 * * *") {
@@ -112,70 +82,8 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
         "notificationDisabled": false
       })
     })
-  }/* else if(event.cron === "0 19 * * *"){
-    await fetch("https://api.line.me/v2/bot/message/push",{
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
-      },
-      body: JSON.stringify({
-        "to": `${env.MY_USER_ID}`,
-        "messages": [
-          {
-            "type": "text",
-            "text": "寝ないとヤバくないか？"
-          }
-        ],
-        "notificationDisabled": false
-      })
-    })
-  } */else if(event.cron === "0 */4 * * *"){
-    await fetch("https://api.line.me/v2/bot/message/push",{
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`
-      },
-      body: JSON.stringify({
-        "to": `${env.MY_USER_ID}`,
-        "messages": [
-          {
-            "type": "text",
-            "text": `現在、${new Date().getHours().toLocaleString("ja-JP")}時です`
-          }
-        ],
-        "notificationDisabled": false
-      })
-    })
   }else if(event.cron === "0 15 * * *"){
-    try {
-      const notion = new Client({
-        auth: env.NOTION_TOKEN,
-        logLevel: LogLevel.INFO
-      })
-      const NewDiary = await notion.pages.create({
-        parent: {
-          database_id: env.DATABASE_ID
-        },
-        icon: {
-          emoji: "📘"
-        },
-        properties: {
-          "名前": {
-            title: [
-              {
-                text: {
-                  content: `${formatToTimeZone(new Date(),"YYYY/MM/DD",{timeZone: "Asia/Tokyo"})}`
-                }
-              }
-            ]
-          }
-        }
-      })
-    } catch(err: unknown){
-      console.error(err)
-    }
+    CreateDiaryPage(env)
   }
 }
 
