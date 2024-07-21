@@ -96,7 +96,7 @@ const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) =
 
     LineMessagePost(env,env.MY_USER_ID,"日記かけよ！")
   }else if(event.cron === "*/30 * * * *"){
-    console.log("Worker Works!")
+    LineMessagePost(env,env.MY_USER_ID,"ちゃんと稼働してまっせ！")
   }else if(event.cron === "0 21 * * * *") {
     LineMessagePost(env,env.MY_USER_ID,"おはよう！朝だな！")
   }else if(event.cron === "0 15 * * *"){
