@@ -3,7 +3,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts"
+    "deploy:cf": "bun build src/index.ts --outdir ./src && bunx wrangler deploy --minify src/index.js"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
