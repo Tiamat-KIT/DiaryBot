@@ -1,30 +1,32 @@
 import {Hono} from 'hono'
 import { type ExportedHandlerScheduledHandler } from "@cloudflare/workers-types"
-import { Client, LogLevel } from "@notionhq/client"
 import { formatToTimeZone } from "date-fns-timezone"
 
 export async function CreateDiaryPage(env: Env){
     try {
-        const notion = new Client({
-            auth: env.NOTION_TOKEN,
-            logLevel: LogLevel.INFO
-        })
-        const NewDiary = await notion.pages.create({
-            parent: {
-                database_id: env.DATABASE_ID
+        const response = await fetch("https://api.notion.com/v1/pages",{
+            headers: {
+                "Authorization": `Bearer ${env.NOTION_TOKEN}`,
+                "Content-Type": "application/json",
+                "Notion-Version": "2022-06-28"
             },
-            icon: {
-                emoji: "📘"
-            },
-            properties: {
-                "名前": {
-                title: [{
-                        text: {
-                            content: `${formatToTimeZone(new Date(),"YYYY/MM/DD",{timeZone: "Asia/Tokyo"})}`
-                        }
-                    }]
+            body: JSON.stringify({
+                parent: {
+                    database_id: env.DATABASE_ID
+                },
+                icon: {
+                    emoji: "📘"
+                },
+                properties: {
+                    "名前": {
+                    title: [{
+                            text: {
+                                content: `${formatToTimeZone(new Date(),"YYYY/MM/DD",{timeZone: "Asia/Tokyo"})}`
+                            }
+                        }]
+                    }
                 }
-            }
+            })
         })
     } catch(err: unknown){
         console.error(err)
@@ -51,7 +53,7 @@ export async function LineMessagePost(env: Env,user_id: string,message: string){
     })
 } 
 
-export async function DiaryWhitedCheck(env: Env) {
+/* export async function DiaryWhitedCheck(env: Env) {
     try {
         const notion = new Client({
             auth: env.NOTION_TOKEN,
@@ -79,7 +81,7 @@ export async function DiaryWhitedCheck(env: Env) {
     }
 }
 
-
+ */
 
 const app = new Hono<{
   Bindings: {
@@ -93,10 +95,7 @@ const app = new Hono<{
 
 const scheduled:ExportedHandlerScheduledHandler<Env>  = async(event, env, ctx) => {
   if(event.cron === "0 12 * * *") {
-
     LineMessagePost(env,env.MY_USER_ID,"日記かけよ！")
-  }else if(event.cron === "*/30 * * * *"){
-    LineMessagePost(env,env.MY_USER_ID,"ちゃんと稼働してまっせ！")
   }else if(event.cron === "0 21 * * * *") {
     LineMessagePost(env,env.MY_USER_ID,"おはよう！朝だな！")
   }else if(event.cron === "0 15 * * *"){
